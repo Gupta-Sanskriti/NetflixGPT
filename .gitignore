@@ -4,9 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
-/package-lock.json
-
-/.firebase
+package-lock.json
+yarn.lock
+.firebase/
 
 # testing
 /coverage
