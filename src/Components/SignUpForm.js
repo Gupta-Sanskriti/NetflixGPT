@@ -6,18 +6,19 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [signUp, setSignUp] = useState(true);
   const [loading, setLoading] = useState(false);
   const [displayError, setDisplayError] = useState("");
 
+  const navigate = useNavigate();
+
   const submitForm = (values) => {
     setLoading(true);
     const { fullname, email, password } = values;
     // check for regex
-    if (!email || !password || !fullname)
-      setDisplayError("enter all the fields");
 
     if (signUp) {
       // Sign up
@@ -38,6 +39,7 @@ const SignUpForm = () => {
             });
           console.log(userCredential);
           setLoading(false);
+          // navigate("/browse");
         })
         .catch((error) => {
           setDisplayError(error.message);
@@ -50,6 +52,7 @@ const SignUpForm = () => {
           const user = userCredential.user;
           console.log(user);
           setLoading(false);
+          // navigate("/browse");
         })
         .catch((error) => {
           setDisplayError(error.message);
