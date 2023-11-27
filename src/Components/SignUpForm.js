@@ -7,6 +7,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../Redux/slices/userSlice";
 
 const SignUpForm = () => {
   const [signUp, setSignUp] = useState(true);
@@ -14,6 +16,7 @@ const SignUpForm = () => {
   const [displayError, setDisplayError] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const submitForm = (values) => {
     setLoading(true);
@@ -30,16 +33,16 @@ const SignUpForm = () => {
             photoURL: "https://example.com/jane-q-user/profile.jpg",
           })
             .then(() => {
-              // Profile updated!
-              // ...
+              // get updated data from auth.currentUser
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(addUser({ uid, email, displayName }));
+              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
-              // ...
             });
           console.log(userCredential);
           setLoading(false);
-          // navigate("/browse");
         })
         .catch((error) => {
           setDisplayError(error.message);
@@ -50,13 +53,11 @@ const SignUpForm = () => {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user);
           setLoading(false);
-          // navigate("/browse");
+          navigate("/browse");
         })
         .catch((error) => {
           setDisplayError(error.message);
-          console.log(error);
           setLoading(false);
         });
     }

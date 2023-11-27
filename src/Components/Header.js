@@ -6,16 +6,17 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
-  const user = useSelector();
+  const user = useSelector((store) => store.user);
   const handleSignOut = () => {
     signOut(auth)
-      .then(() => {})
+      .then(() => {
+        navigate("/");
+      })
       .catch((error) => {
         console.error(error);
+        navigate("/error");
       });
   };
-
-  useEffect(() => {}, []);
 
   return (
     <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between">
